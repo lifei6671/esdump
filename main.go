@@ -37,7 +37,7 @@ func main() {
 			Target: &cli.StringSliceFlag{
 				Name:    "match-all",
 				Aliases: []string{"A"},
-				Usage:   "Query string in Lucene syntax.",
+				Usage:   "Query string in key-value syntax.",
 			},
 			Destination: &config.MatchAll,
 		},
