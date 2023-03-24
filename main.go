@@ -36,8 +36,8 @@ func main() {
 		&cli.MultiStringFlag{
 			Target: &cli.StringSliceFlag{
 				Name:    "match-all",
-				Aliases: []string{"A"},
-				Usage:   "Query string in key-value syntax.",
+				Aliases: []string{"m"},
+				Usage:   "List of <field>:<direction> pairs to filter.",
 			},
 			Destination: &config.MatchAll,
 		},
@@ -78,14 +78,6 @@ func main() {
 			},
 			Value:       []string{"log-*"},
 			Destination: &config.Index,
-		},
-		&cli.MultiStringFlag{
-			Target: &cli.StringSliceFlag{
-				Name:    "match_all",
-				Aliases: []string{"m"},
-				Usage:   "List of <field>:<direction> pairs to filter.",
-			},
-			Destination: &config.MatchAll,
 		},
 		&cli.MultiStringFlag{
 			Target: &cli.StringSliceFlag{
