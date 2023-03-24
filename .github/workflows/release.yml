@@ -1,25 +1,37 @@
-name: Release
+name: Release esdump
+
 on:
-  create:
-    tags:
-    - v*
+  release:
+    types: [created]
 
 jobs:
-  release:
-    name: Release on GitHub
+  build-go-binary:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        goos: [linux, windows, darwin]
+        goarch: [amd64, arm64]
+        exclude:
+          - goarch: arm64
+            goos: windows
     steps:
-    - name: Check out code
-      uses: actions/checkout@v1
+      - name: Get Release Info
+        run: |
+          {
+            echo "RELEASE_TAG=${GITHUB_REF/refs\/tags\//}"
+            echo "REPOSITORY_NAME=${GITHUB_REPOSITORY#*/}"
+            echo "OS_NAME=${{ matrix.goos }}"
+          } >> "$GITHUB_ENV"
 
-    - name: Validates GO releaser config
-      uses: docker://goreleaser/goreleaser:latest
-      with:
-        args: check
-
-    - name: Create release on GitHub
-      uses: docker://goreleaser/goreleaser:latest
-      with:
-        args: release
-      env:
-        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      - uses: actions/checkout@v3
+      - uses: wangyoucao577/go-release-action@v1.37
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          goos: ${{ matrix.goos }}
+          goarch: ${{ matrix.goarch }}
+          goversion: 1.19
+          binary_name: "esdump"
+          extra_files: README.md
+          build_flags: -v
+          ldflags: -X 'main.BuildVersion=${{ env.RELEASE_TAG }}'
+          asset_name: '${{ env.REPOSITORY_NAME }}-${{ env.RELEASE_TAG }}-${{ env.OS_NAME }}-${{ matrix.goarch }}'

@@ -16,7 +16,7 @@ import (
 	"github.com/lifei6671/esdump/esv7"
 )
 
-var version = "v0.1.0"
+var BuildVersion = "v0.1.0"
 
 func main() {
 	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
@@ -146,7 +146,7 @@ func main() {
 			Destination: &config.Debug,
 		},
 	}
-	app.Version = version
+	app.Version = BuildVersion
 	app.Action = func(ctx *cli.Context) error {
 		if config.Debug {
 			zerolog.SetGlobalLevel(zerolog.DebugLevel)
