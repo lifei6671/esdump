@@ -7,7 +7,7 @@ default: build
 all: build test
 
 build:
-	go build -ldflags "-X github.com/lifei6671/esdunp/main.BuildVersion=${GIT_COMMIT}"
+	go build -ldflags "-X github.com/lifei6671/esdump/main.BuildVersion=${GIT_COMMIT}"
 
 clean:
 	rm ./esdump
